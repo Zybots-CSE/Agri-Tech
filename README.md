@@ -55,32 +55,32 @@ The core pipeline: **Solar ESP32 sensor nodes → Cloud AI risk engine → fan-o
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────┐
-│ FIELD EDGE LAYER (C++ / ESP32)                                          │
+│ FIELD EDGE LAYER (C++ / ESP32)                                           │
 │                                                                          │
-│  JSN-SR04T Ultrasonic ─┐                                                │
+│  JSN-SR04T Ultrasonic ─┐                                                 │
 │  Capacitive Soil Sensor─┼──▶ ESP32-WROOM-32 ──▶ SIM800L (GSM/GPRS)      │
-│  Solar Panel + Li-ion ──┘         │                                     │
-│                                    │ HTTPS POST (batched JSON)          │
+│  Solar Panel + Li-ion ──┘         │                                      │
+│                                    │ HTTPS POST (batched JSON)           │
 └────────────────────────────────────┼─────────────────────────────────────┘
                                      ▼
 ┌──────────────────────────────────────────────────────────────────────────┐
 │ CLOUD INGESTION LAYER                                                    │
 │  FastAPI Telemetry Gateway ──▶ TimescaleDB/PostgreSQL (time-series)     │
-│  + OpenWeatherMap / Open-Meteo forecast ingestion (cron)                │
-│  + Irrigation Dept. reservoir release feed (scraper/API)                │
+│  + OpenWeatherMap / Open-Meteo forecast ingestion (cron)                 │
+│  + Irrigation Dept. reservoir release feed (scraper/API)                 │
 └────────────────────────────────────┼─────────────────────────────────────┘
                                      ▼
 ┌──────────────────────────────────────────────────────────────────────────┐
 │ AI / PREDICTIVE ENGINE                                                   │
 │  Feature store ──▶ XGBoost/LightGBM inundation-probability model        │
-│  + rule-based override layer (sensor-fault & rate-of-rise guards)       │
-│  + risk-scoring service (0–100, per field polygon)                      │
+│  + rule-based override layer (sensor-fault & rate-of-rise guards)        │
+│  + risk-scoring service (0–100, per field polygon)                       │
 └──────┬───────────────────────┬───────────────────────┬───────────────────┘
        ▼                       ▼                       ▼
 ┌─────────────┐      ┌───────────────────┐   ┌────────────────────────┐
 │ SMS Gateway │      │ Push Notification │   │ Officer Web Dashboard  │
 │ (Sinhala/   │      │ Service (Farmer   │   │ (React + GIS map +     │
-│  Tamil)     │      │  Mobile App)       │   │  sluice-gate control)  │
+│  Tamil)     │      │  Mobile App)      │   │  sluice-gate control)  │
 └─────────────┘      └───────────────────┘   └────────────────────────┘
 ```
 
