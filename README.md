@@ -67,3 +67,50 @@ Over 75% of smallholder paddy farmers rely on standard feature phones. AgriShiel
 ## Software & Machine Learning Architecture
 
 For a technical lead or software engineer, the backend processes data using the following pipeline:
+
+
+
+
+### Real-Time Handling & Fault Tolerance
+* **15-Minute Cycle:** ESP32 wakes up, takes 10 sensor measurements, filters out noise using a median filter, transmits data over HTTP POST via SIM800L, and enters deep sleep.
+* **Offline Local Storage:** If GSM connectivity drops, readings are cached locally on the ESP32 (up to 200 logs) and batch-uploaded when network reconnects.
+* **False Alarm Prevention:** Any sensor reading deviating by >300% from its rolling average triggers a `SENSOR_FAULT` review flag on the dashboard rather than sending a false SMS alert to farmers.
+
+---
+
+## Datasets & Research References
+
+### Training Datasets & Open Resources
+* **NASA POWER Weather Dataset:** Historical rainfall, humidity, and surface wetness data ([Link](https://power.larc.nasa.gov/)).
+* **Global Surface Water Data (Google Earth Engine):** Historical surface water dynamics and flood maps ([Link](https://global-surface-water.appspot.com/)).
+* **Open-Meteo Weather API:** Real-time and forecasted soil moisture, hourly rainfall, and atmospheric trends ([Link](https://open-meteo.com/)).
+* **Humanitarian Data Exchange (HDX) Sri Lanka:** Hydrological river basin maps and historical disaster statistics ([Link](https://data.humdata.org/group/lka)).
+
+### Key Research Foundations
+1. **IoT Field Sensing Accuracy:** "IoT-Based Automated Field Water Level Monitoring for Paddy Fields" (*IEEE Access*) – Validates ultrasonic distance sensor reliability in outdoor agricultural runoff channels.
+2. **SMS Early Warning Impact:** "Information Technology and Agricultural Markets in Developing Countries" (*Quarterly Journal of Economics*) – Demonstrates that targeted SMS alerts significantly reduce harvest losses in developing nations.
+3. **Machine Learning Flood Prediction:** "Flood Susceptibility Mapping Using Machine Learning Frameworks" (*Journal of Hydrology*) – Demonstrates that gradient-boosted trees (XGBoost) provide faster real-time predictions than heavy physical hydraulic models.
+
+---
+
+## Quickstart Guide for Developers
+
+### Prerequisites
+* Python 3.10+
+* PostgreSQL 15 + TimescaleDB
+* PlatformIO CLI (for ESP32 firmware)
+
+### 1. Setting Up the Backend Service
+```bash
+# Clone the repository
+git clone [https://github.com/your-team/agrishield.git](https://github.com/your-team/agrishield.git)
+cd agrishield/backend
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run database migrations
+python manage.py db upgrade
+
+# Start local server
+uvicorn app.main:app --reload --port 8000
