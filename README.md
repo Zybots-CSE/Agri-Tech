@@ -1,4 +1,4 @@
-# 🌾 SmartAgri-LK
+# 🌾 SmartAgri_LK
 ### Smart Climate-Resilient Agricultural Early Warning System
 
 > IoT + AI powered flood prediction and multi-channel early-warning platform protecting paddy farmers and rural agricultural communities from climate unpredictability.
